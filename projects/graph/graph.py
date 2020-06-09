@@ -124,25 +124,18 @@ class Graph:
         depth-first order.
         This should be done using recursion.
         """
-        # if being called for the first time, initialize visited and path
         if visited is None:
             visited = set()
         if path is None:
             path = []
-        # Track the visited vertices
         visited.add(starting_vertex)
-        # Add to path
         path = path + [starting_vertex]
-        # If destination is found, return path
         if starting_vertex == destination_vertex:
             return path
-        # otherwise, call function on neighbors
         for neighbor in self.get_neighbors(starting_vertex):
             if neighbor not in visited:
-                # checks for a path
                 neighbor_path = self.dfs_recursive(
                     neighbor, destination_vertex, visited, path)
-                # only return if there is a path
                 if neighbor_path:
                     return neighbor_path
 
