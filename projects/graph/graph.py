@@ -90,10 +90,15 @@ class Graph:
         breath-first order.
         """
         q = Queue()
-        visited = set()
-        path = set()
+        q.enqueue([starting_vertex])
 
-         
+        while q.size() > 0:
+            v = q.dequeue()
+            if v[-1] == destination_vertex:
+                return v
+            for vert in self.get_neighbors(v[-1]):
+                path = [*v, vert]
+                q.enqueue(path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -101,17 +106,45 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        s = Stack()
+        s.push([starting_vertex])
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+        while s.size() > 0:
+            v = s.pop()
+            if v[-1] == destination_vertex:
+                return v
+            for vert in self.get_neighbors(v[-1]):
+                path = [*v, vert]
+                s.push(path)
+
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
-
         This should be done using recursion.
         """
-        pass  # TODO
+        # if being called for the first time, initialize visited and path
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []
+        # Track the visited vertices
+        visited.add(starting_vertex)
+        # Add to path
+        path = path + [starting_vertex]
+        # If destination is found, return path
+        if starting_vertex == destination_vertex:
+            return path
+        # otherwise, call function on neighbors
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor not in visited:
+                # checks for a path
+                neighbor_path = self.dfs_recursive(
+                    neighbor, destination_vertex, visited, path)
+                # only return if there is a path
+                if neighbor_path:
+                    return neighbor_path
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
